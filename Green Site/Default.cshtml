@@ -1,0 +1,45 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Home Page";
+}
+
+@section featured {
+<section class="featured">
+    <div class="content-wrapper">
+        <hgroup class="title">
+            <h1>Welcome to Green Leaf!</h1>
+            <h2><b>@WebSecurity.CurrentUserName</b> Enjoy your stay.</h2>
+        </hgroup>
+        <h3>
+            <mark>This is a document hosting site.</mark> If you are new to the site, please read the rules below.
+            If you're not new and have an account, proceed to <mark>Upload and Download</mark> documents until the site breaks.</br>
+            -Will</br>
+            <font color = blue>(Real Talk 01: If you value your sanity, do not read my "Real Talk" section.)</font>
+       </h3>
+    </div>
+</section>
+}
+<h2>11/09/14 - The problem with yahoo blocking confirmation e-mails should now be fixed. Please check your junk/spam folders.</h2>
+<h2>Rules:</h2>
+
+<ol class="round">
+    <li class="one">
+        <h5>Registration is Required</h5>
+        Users must create an account to use the services of the site.
+    </li>
+
+    <li class="two">
+        <h5>Documents Only</h5>
+        Users may only upload documents such as .txt, .rtf, and .doc files but images are also being allowed for demo purposes.
+    </li>
+    <li class="three">
+        <h5>Size limit</h5>
+        Users may only upload documents of 40MB or smaller. This number can be increased if necessary.
+    </li>
+    
+    <li class="four">
+        <h5>Don't be a Jerk</h5>
+         Users found abusing the site with spam, inappropiate material, and such, will be banned without warning.
+        
+    </li>
+</ol>

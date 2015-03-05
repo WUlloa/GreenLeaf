@@ -1,0 +1,58 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Download";
+/*#################Call database####################################*/
+        var db = Database.Open("ProjectDatabase");
+        var populatequery = "SELECT FileDate, FileName, UserName, FileId FROM FileInformation";<!--Simple Query for my data-->
+        var data = db.Query (populatequery);
+        var grid = new WebGrid(source:data, defaultSort: "FileDate");<!--Creates a Grid for my DB data-->
+/*#####################Changes sorting order############################*/
+if (Request.QueryString[grid.SortDirectionFieldName].IsEmpty()) 
+  {
+    grid.SortDirection = SortDirection.Descending;
+  }
+/*##########################Secure page from non-members#####################*/
+/*if (!WebSecurity.IsAuthenticated) {
+        Response.Redirect("~/Security/SecurityDownloadPage?returnUrl="
+            + Request.Url.LocalPath);
+    }*/
+   
+}
+
+<!--################################Grid Layout################################################-->
+
+<h1>Downloads:</h1>
+<div id = "grid"><h3>
+@grid.GetHtml(
+    tableStyle: "table",
+    alternatingRowStyle: "alternate",
+    headerStyle: "header",
+    columns:grid.Columns(
+    grid.Column("FileDate", "File Date"),
+    grid.Column("FileName", "File"),
+    grid.Column("UserName", "Uploader"),
+    grid.Column("FileId","FileDownload", format:@<a href="Download.cshtml?Id= @item.FileId">Download</a>)
+    )
+)
+</div></h3>
+       
+<!--################################Featured################################################-->
+
+@section featured {
+<section class="featured">
+    <div class="content-wrapper">
+        <hgroup class="title">
+            <h1>Welcome to the Download Page!</h1>
+            <h2>Download Away.</h2>
+        </hgroup>
+        <h3>
+            All files uploaded to the site are available here for download. Download responsibly.</br>
+            -Will</br>
+            <font color = blue>(Real Talk 09: A sheep is capable of killing a human in 3.8 seconds.)</font>
+       </h3>
+    </div>
+</section>
+}
+
+
+

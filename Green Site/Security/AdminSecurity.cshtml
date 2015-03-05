@@ -1,0 +1,32 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    PageData["Title"] = "Admin-only Error";
+/*##########################Secure page from non-admins#####################*/
+if(Roles.IsUserInRole("admin")) {
+   Response.Redirect("~/Admin/AdminPage?returnUrl="
+            + Request.Url.LocalPath);
+}
+else{
+    //Stay on this page
+}
+
+}
+
+@section featured {
+<section class="featured">
+    <div class="content-wrapper">
+        <hgroup class="title">
+            <h1>Welcome to Admin Page!</h1>
+            <h2>You're not an Admin.</h2>
+        </hgroup>
+        <h3>
+           Admins are here for your protection.</br>
+            -Will</br>
+            <font color = blue>(Real Talk 81: Iguanas are capable of mimicking human speech.)</font>
+       </h3>
+    </div>
+</section>
+}
+
+
+<h1>*You must <a href="~/Account/Login.cshtml">login</a> in as an admin to access this page.</h1>

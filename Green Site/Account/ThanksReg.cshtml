@@ -1,0 +1,29 @@
+﻿@{
+    // Set the layout page and page title
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Thanks for registering";
+}
+
+@section featured {
+<section class="featured">
+    <div class="content-wrapper">
+        <hgroup class="title">
+            <h1>Welcome to the HIVE MIND!</h1>
+            <h2>Nah, just joking. Thanks for confirming your e-mail. Have fun.</h2>
+        </hgroup>
+        <h3>
+            Obey the upload <mark>rules</mark>please.</br>
+            -Will</br>
+            <font color = blue>(Real Talk 22: There is a 50% chance we are all koalas dreaming we are humans.)</font>
+       </h3>
+    </div>
+</section>
+}
+
+
+
+    <hgroup class="title">
+        <h1>@Page.Title.</h1>
+        <h2>You are all set!</h2>
+    </hgroup>
+    <h3>Proceed to the <a href="~/Account/Login.cshtml">login</a> page and take your new account for a spin!</h3>

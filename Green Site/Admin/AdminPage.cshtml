@@ -1,0 +1,33 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    PageData["Title"] = "Administrators only";
+
+
+if (!Roles.IsUserInRole("admin")) 
+   {
+    Response.Redirect("~/Security/AdminSecurity?returnUrl="
+            + Request.Url.LocalPath);
+   }
+/*##########################Search Database & Populate Grid#####################*/ 
+
+}     
+<ol class="square">
+<li><a href="ManageFiles">Manage Files</a></li>
+<li><a href="ManageUsers">Manage Users</a></li>
+</ol>
+@section featured {
+<section class="featured">
+    <div class="content-wrapper">
+        <hgroup class="title">
+            <h1>Welcome Admin @WebSecurity.CurrentUserName</h1>
+            <h2>You are the law!</h2>
+        </hgroup>
+        <h3>
+            Your task is to rescue the President's daugther and to administrate this site. Well, mostly to administrate this site.</br>
+            -Will</br>
+            <font color = blue>(Real Talk 57: Who Admins the Admin?)</font>
+       </h3>
+    </div>
+</section>
+}
+

@@ -1,0 +1,45 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    PageData["Title"] = "Administrators only";
+
+
+if (!Roles.IsUserInRole("admin")) 
+   {
+    Response.Redirect("~/Security/AdminSecurity?returnUrl="
+            + Request.Url.LocalPath);
+   }
+/*##########################Search Database & Populate Grid#####################*/ 
+var db = Database.Open("ProjectDatabase");
+var query = "SELECT DISTINCT Email FROM UserProfile ORDER BY Email";
+var Emails = db.Query(query);
+query = "SELECT * FROM UserProfile WHERE UserName LIKE @0 AND Email LIKE @1";
+var UserName = "%" + Request["UserName"] + "%";
+var Email = "%" + Request["Email"] + "%";
+var data = db.Query(query, UserName, Email);
+var columns = new[]{"UserName", "Email","UserId"};
+var grid = new WebGrid(data, columnNames: columns, rowsPerPage: 6);
+}
+
+<h1>Manage Users:</h1>
+<form method="post">
+<div id="grid"><h3>
+UserName: <input type="text" name="UserName" value="@Request["UserName"]" />
+Emails: <select name="Email">
+<option></option>
+@foreach(var item in Emails){
+<option @(Request["Email"] == item.Email ? " selected=\"selected\"" : "")>@item.Email</option>
+}
+</select>
+<input type="submit" />
+@grid.GetHtml(
+    tableStyle: "table",
+    alternatingRowStyle: "alternate",
+    headerStyle: "header",
+    columns:grid.Columns(
+    grid.Column("UserName", "UserName"),
+    grid.Column("Email", "Email"),
+    grid.Column("UserId","Action", format:@<a href="DeleteUserPage.cshtml?Id= @item.UserId">Delete</a>)
+    )
+)
+</div></h3>
+</form>

@@ -1,0 +1,47 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    PageData["Title"] = "Administrators only";
+
+
+if (!Roles.IsUserInRole("admin")) 
+   {
+    Response.Redirect("~/Security/AdminSecurity?returnUrl="
+            + Request.Url.LocalPath);
+   }
+/*##########################Search Database & Populate Grid#####################*/ 
+var db = Database.Open("ProjectDatabase");
+var query = "SELECT DISTINCT UserName FROM FileInformation ORDER BY UserName";
+var userNames = db.Query(query);
+query = "SELECT * FROM FileInformation WHERE FileName LIKE @0 AND UserName LIKE @1";
+var fileName = "%" + Request["FileName"] + "%";
+var userName = "%" + Request["UserName"] + "%";
+var data = db.Query(query, fileName, userName);
+var columns = new[]{"FileDate", "FileName", "UserName", "FileId"};
+var grid = new WebGrid(data, columnNames: columns, rowsPerPage: 6);
+}
+
+<h1>Manage Files:</h1>
+<form method="post">
+<div id="grid"><h3>
+FileName: <input type="text" name="FileName" value="@Request["FileName"]" />
+Uploader: <select name="UserName">
+<option></option>
+@foreach(var item in userNames){
+<option @(Request["UserName"] == item.UserName ? " selected=\"selected\"" : "")>@item.Username</option>
+}
+</select>
+<input type="submit" />
+@grid.GetHtml(
+    tableStyle: "table",
+    alternatingRowStyle: "alternate",
+    headerStyle: "header",
+    columns:grid.Columns(
+    grid.Column("FileDate", "File Date"),
+    grid.Column("FileName", "File Name"),
+    grid.Column("UserName", "Uploader"),
+    grid.Column("FileId","File", format:@<a href="~/Download.cshtml?Id= @item.FileId">Download</a>),
+    grid.Column("FileId","Action", format:@<a href="DeleteFilePage.cshtml?Id= @item.FileId">Delete</a>)
+    )
+)
+</div></h3>
+</form>

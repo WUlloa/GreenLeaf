@@ -1,0 +1,12 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    PageData["Title"] = "UserControlPanel";
+/*#################Secure Page from non-users####################################*/
+     if (!WebSecurity.IsAuthenticated) //Allows for secure pages
+    { 
+      Response.Redirect("~/Account/Login?returnUrl=" // Make non-users sign in.
+            + Request.Url.LocalPath);
+    }
+}
+<h1>Ha, you thought you could leave.</h1>
+<h2>Fuction to close account will be enabled soon.</h2>

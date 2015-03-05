@@ -1,0 +1,16 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "AccountRedirect";
+/*##########################Secure page from non-members#####################*/    
+    if (WebSecurity.IsAuthenticated) //Allows for secure pages
+    { 
+      if(Roles.IsUserInRole("admin")) //Send Admins to Admin CP
+      {Response.Redirect("~/Admin/AdminPage.cshtml");}
+      else
+      {Response.Redirect("~/Management/UserControlPanel.cshtml");}//Send Users to User CP
+      
+    }
+else{Response.Redirect("~/Account/Login?returnUrl=" // Make non-users sign in.
+            + Request.Url.LocalPath);} 
+}
+

@@ -1,0 +1,31 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    PageData["Title"] = "UserControlPanel";
+/*#################Secure Page from non-users####################################*/
+     if (!WebSecurity.IsAuthenticated) //Allows for secure pages
+    { 
+      Response.Redirect("~/Account/Login?returnUrl=" // Make non-users sign in.
+            + Request.Url.LocalPath);
+    }
+}
+<h1>Welcome @WebSecurity.CurrentUserName</h1>
+<ol class="square">
+<li><a href="UserFileView">Manage Your Files</a></li>
+<li><a href="CloseAccount">Close Account</a></li>
+</ol>
+
+@section featured {
+<section class="featured">
+    <div class="content-wrapper">
+        <hgroup class="title">
+            <h1>Welcome @WebSecurity.CurrentUserName</h1>
+            <h2>This is your control panel.</h2>
+        </hgroup>
+        <h3>
+            This control panel gives you the power to destroy or save the world. Choose wisely. You can manage your files if you want, also.</br>
+            -Will</br>
+            <font color = blue>(Real Talk 333: Have you ever thought of inspiring others not with riches and fame but by simply being a good human being?)</font>
+       </h3>
+    </div>
+</section>
+}

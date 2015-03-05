@@ -1,0 +1,47 @@
+﻿@{
+    WebSecurity.InitializeDatabaseConnection("ProjectDatabase", "UserProfile", "UserId", "UserName", autoCreateTables: true); //NEW TEA
+   // WebSecurity.InitializeDatabaseConnection("ProjectDatabase", "UserProfile", "UserId", "UserName", "Email", autoCreateTables: true);
+
+    // To let users of this site log in using their accounts from other sites such as Microsoft, Facebook, Twitter,
+    // you must update this site. For more information visit http://go.microsoft.com/fwlink/?LinkID=226949
+
+    //OAuthWebSecurity.RegisterMicrosoftClient(
+    //    clientId: "",
+    //    clientSecret: "");
+
+    OAuthWebSecurity.RegisterTwitterClient(
+        consumerKey: "v3CyBQ8vhfj6BB8qCB0ojAYX1",
+        consumerSecret: "HZHZFOpfS0yRXtuu1chP6lcz59CyxG1U6fOqOdAJFW3qv68vBe");
+
+    //OAuthWebSecurity.RegisterFacebookClient(
+    //    appId: "",
+    //    appSecret: "");
+
+    
+    //OAuthWebSecurity.RegisterGoogleClient();
+ 
+   // WebMail.SmtpServer = "mailserver.example.com";
+   // WebMail.EnableSsl = true;
+   // WebMail.UserName = "username@example.com";
+   // WebMail.Password = "your-password";
+   // WebMail.From = "your-name-here@example.com";
+
+    
+/*----------Mail Settings Contact Form-----------------------------------*/
+    /*WebMail.SmtpServer = "outlook.office365.com";
+    WebMail.EnableSsl = true;
+    WebMail.UserName = "Wulloa@njcu.edu";
+    WebMail.Password = "Trunks55";
+    WebMail.From = "Wulloa@njcu.edu";
+    WebMail.SmtpPort = 587;*/
+
+    WebMail.SmtpServer = "smtp.gmail.com";
+    WebMail.EnableSsl = true;
+    WebMail.UserName = "GreenLeafLetters@gmail.com";
+    WebMail.Password = "GreenLeafMail";
+    WebMail.From = "GreenLeafLetters@gmail.com";
+    WebMail.SmtpPort = 587;
+/*---------------------------------------------------------------------*/
+    // To learn how to optimize scripts and stylesheets in your site go to http://go.microsoft.com/fwlink/?LinkID=248973
+
+}

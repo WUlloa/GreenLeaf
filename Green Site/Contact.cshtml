@@ -1,0 +1,92 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "ContactUs";
+
+//Setting up contacts forms
+var message = "";
+var senderAddress = Request.Form["emailAddress"];
+var senderName = Request.Form["emailSubject"];
+var senderInfo = Request.Form["emailBody"];
+
+try{
+    if (IsPost && Validation.IsValid()){
+             
+       //Send the email to
+       WebMail.Send(to:"Wulloa@NJCU.edu",
+        subject: Request.Form["emailSubject"],
+        body: "Green Leaf Inquiry from -    " + Request.Form["senderName"]+ 
+        " - " + "Email Subject -    " + Request.Form["emailSubject"] + " - " + "Customer email - " + Request.Form["emailAddress"] +
+        " - " + "Email Content -    " + Request.Form["emailBody"]
+        );
+        //Confirmation of sent message to user
+        Response.Redirect("~/Message/Success?returnUrl="
+            + Request.Url.LocalPath);
+        //message = "Thank you, your email has been sent!";
+
+     }//If close scope
+
+}// Try close scope
+
+catch(Exception ex){
+    //Response.Redirect("~/Message/Failure?returnUrl="
+            //+ Request.Url.LocalPath);
+    message = "Sorry, your email could not be sent.";
+
+    }//catch close scope
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8"/>
+</head>
+
+<body>
+    <h1>Contact Will:</h1>
+
+<form method="post">
+    <p>
+        <label for="senderName">Name:</label>
+        <input type="text" name="senderName" placeholder="e.g. James Bond" required/>
+    </p>
+    <p>
+        <label for="emailAddress">Email address:</label>
+        <input type="email" name="emailAddress" placeholder="e.g. JamesBond@MI6.com" required/>
+    </p>
+    <p>
+        <label for="emailSubject">Subject:</label>
+        <input type="text" name="emailSubject" placeholder="e.g. Inquiry/Bug report/Recommendations" required/>
+    </p>
+    <p>
+        <label for="emailBody">Message:</label></br>
+        <textarea name="emailBody" rows="7" placeholder="Your message" required></textarea>
+    </p>
+    <p><input type="submit" value="Submit"/></p>
+    @if(IsPost){
+        <h1>
+            <p>@message</p>
+        </h1>
+    }
+    </form>
+</body>
+</html>
+
+
+
+
+@section featured {
+<section class="featured">
+    <div class="content-wrapper">
+        <hgroup class="title">
+            <h1>Welcome to the Contact Page.</h1>
+            <h2></h2>
+        </hgroup>
+        <h3>
+            For issues or bug reports please contact me using the form below, thanks.</br>
+            -Will</br>
+            <font color = blue>(Real Talk 88: Deer are capable of sitting in chairs.)</font>
+       </h3>
+    </div>
+</section>
+}
+

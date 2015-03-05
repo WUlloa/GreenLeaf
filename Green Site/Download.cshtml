@@ -1,0 +1,23 @@
+﻿@{
+/*##########################Secure page from non-members#####################*/ 
+   if (!WebSecurity.IsAuthenticated) {
+        Response.Redirect("~/Account/Login?returnUrl=~/DownloadPage.cshtml");
+    }
+   
+/*##########################Download Function#####################*/
+    int id = 0;
+    if(Request["Id"].IsInt()){
+        id = Request["Id"].AsInt();
+        var db = Database.Open("ProjectDatabase");
+        var sql = "Select * From FileInformation Where FileId = @0";
+        var file = db.QuerySingle(sql, id);
+        if(file.MimeType.StartsWith("image/")){
+            Response.AddHeader("content-disposition", "inline; filename=" + file.FileName);
+        } else {
+            Response.AddHeader("content-disposition", "attachment; filename=" + file.FileName);
+        }
+        Response.ContentType = file.MimeType;
+        Response.BinaryWrite((byte[])file.FileContent);
+    }
+}
+

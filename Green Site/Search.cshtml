@@ -1,0 +1,64 @@
+﻿@{
+Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Search";
+
+//Secure page
+if (!WebSecurity.IsAuthenticated) { //Allows for secure pages
+        Response.Redirect("~/Security/SecuritySearch?returnUrl="
+            + Request.Url.LocalPath);
+    }
+
+/*-----------Search Function Query-----------------------------------*/
+
+var db = Database.Open("ProjectDatabase");
+var query = "SELECT DISTINCT UserName FROM FileInformation ORDER BY UserName";
+var userNames = db.Query(query);
+query = "SELECT * FROM FileInformation WHERE FileName LIKE @0 AND UserName LIKE @1";
+var fileName = "%" + Request["FileName"] + "%";
+var userName = "%" + Request["UserName"] + "%";
+var data = db.Query(query, fileName, userName);
+var columns = new[]{"FileDate", "FileName", "UserName", "FileId"};
+var grid = new WebGrid(data, columnNames: columns, rowsPerPage: 6);
+}
+<h1>Search:</h1>
+<form method="post">
+<div id="grid"><h3>
+FileName: <input type="text" name="FileName" value="@Request["FileName"]" />
+Uploader: <select name="UserName">
+<option></option>
+@foreach(var item in userNames){
+<option @(Request["UserName"] == item.UserName ? " selected=\"selected\"" : "")>@item.Username</option>
+}
+</select>
+<input type="submit" />
+@grid.GetHtml(
+    tableStyle: "table",
+    alternatingRowStyle: "alternate",
+    headerStyle: "header",
+    columns:grid.Columns(
+    grid.Column("FileDate", "File Date"),
+    grid.Column("FileName", "File"),
+    grid.Column("UserName", "Uploader"),
+    grid.Column("FileId","FileDownload", format:@<a href="Download.cshtml?Id= @item.FileId">Download</a>)
+    )
+)
+</div></h3>
+</form>
+
+@section featured {
+<section class="featured">
+    <div class="content-wrapper">
+        <hgroup class="title">
+            <h1>Welcome to the Search Page!</h1>
+            <h2>Search for your dreams.</h2>
+        </hgroup>
+        <h3>
+            You can search by file name or by uploader, the choice is yours. Or both, you can do both.</br>
+            -Will</br>
+            <font color = blue>(Real Talk 53: Humans spend 34% of their lifespan searching for something.)</font>
+       </h3>
+    </div>
+</section>
+}
+
+

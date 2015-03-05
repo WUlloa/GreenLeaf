@@ -1,0 +1,76 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    PageData["Title"] = "User Delete";
+
+
+/*#################Secure Page from non-users####################################*/
+     if (!WebSecurity.IsAuthenticated) //Allows for secure pages
+    { 
+      Response.Redirect("~/Account/Login?returnUrl=" // Make non-users sign in.
+            + Request.Url.LocalPath);
+    }
+   
+    var FileName = "";
+    var FileDate = DateTime.Now;
+    var Uploader = "";
+    var FileId = "";
+
+    if(!IsPost){
+        if(!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt()){
+            FileId = Request.QueryString["ID"];
+            var db = Database.Open("ProjectDatabase");
+            var dbCommand = "SELECT * FROM FileInformation WHERE FileId = @0";
+            var row = db.QuerySingle(dbCommand, FileId);
+            if(row != null) {
+                FileName = row.FileName;
+                FileDate = row.FileDate;
+                Uploader = row.UserName;
+            }
+            else{
+                Validation.AddFormError("No File was located for that Id.");
+            }
+        }
+        else{
+            Validation.AddFormError("No File was located for that Id.");
+        }
+    }
+    if(IsPost && !Request["buttonDelete"].IsEmpty()){
+        FileId = Request.Form["FileId"];
+        var db = Database.Open("ProjectDatabase");
+        var deleteCommand = "DELETE FROM FileInformation WHERE FileId = @0";
+        db.Execute(deleteCommand, FileId);
+        Response.Redirect("UserControlPanel.cshtml");
+        }
+
+}
+
+
+
+<html>
+<head>
+  <title>Delete Confirmation:</title>
+</head>
+<body>
+      <h1>Delete Confirmation:</h1>
+        @Html.ValidationSummary()
+      <p><a href="UserControlPanel">Return Page</a></p>
+
+      <form method="post">
+        <fieldset>
+        <legend>File Information</legend>
+
+        <p><span>File Name:</span>
+         <span1>@FileName</span1></p>
+
+        <p><span>Date:</span>
+         <span1>@FileDate</span1></p>
+
+        <p><span>Uploader:</span>
+          <span1>@Uploader</span1></p>
+
+        <input type="hidden" name="FileId" value="@FileId" />
+        <p><input type="submit" name="buttonDelete" value="Delete File" /></p>
+        </fieldset>
+      </form>
+    </body>
+</html>
